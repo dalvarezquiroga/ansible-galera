@@ -21,13 +21,19 @@ pip install ansible==XXX
 
 1º Change IP address in vars/main.yml
 
+```bash
+
 mysql_galera1: "IP-1-MACHINE-GALERA"
 mysql_galera2: "IP-2-MACHINE-GALERA"
 mysql_galera3: "IP-3-MACHINE-GALERA"
+```
 
 2º Also change ROOT Password Galera
 
+```bash
 mysql_password: "XXXXXXXXXXXXXXXXXX"
+```
+
 
 
 # Bring up the First Node
@@ -39,7 +45,7 @@ Note: If you prefer them all to be started with systemd, once you have another n
 
 ```bash
 
-sudo /etc/init.d/mysql start --wsrep-new-cluster
+sudo /etc/init.d/mysql start --wsrep-new-cluster && tail -f /var/log/mysql/error.log
 
 ```
 
@@ -49,7 +55,7 @@ sudo /etc/init.d/mysql start --wsrep-new-cluster
 
 ```bash
 
-sudo systemctl start mysql
+sudo systemctl start mysql && tail -f /var/log/mysql/error.log
 
 ```
 
@@ -73,4 +79,10 @@ Output
 +--------------------+-------+
 
 ```
+# Licence
 
+MIT
+
+# Author Information
+
+David Álvarez Quiroga
