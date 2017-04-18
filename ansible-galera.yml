@@ -1,0 +1,6 @@
+---
+- name: Deploy Galera Cluster
+  hosts: '{{host}}'
+  become: True
+  roles:
+    - role: ansible-galera

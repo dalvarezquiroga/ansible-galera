@@ -7,7 +7,7 @@ Playbook to deploy Galera Cluster
 ```bash
 
 apt-get install ansible 
-pip install ansible==XXX
+pip install ansible==VERSION
 
 ```
 
@@ -22,10 +22,10 @@ pip install ansible==XXX
 1º Change IP address in vars/main.yml
 
 ```bash
+mysql_galera1: "INTERNAL-IP-1-MACHINE-GALERA"
+mysql_galera2: "INTERNAL-IP-2-MACHINE-GALERA"
+mysql_galera3: "INTERNAL-IP-3-MACHINE-GALERA"
 
-mysql_galera1: "IP-1-MACHINE-GALERA"
-mysql_galera2: "IP-2-MACHINE-GALERA"
-mysql_galera3: "IP-3-MACHINE-GALERA"
 ```
 
 2º Also change ROOT Password Galera
