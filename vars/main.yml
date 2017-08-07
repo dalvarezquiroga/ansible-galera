@@ -3,4 +3,4 @@
 mysql_galera1: "INTERNAL-IP-1-MACHINE-GALERA"
 mysql_galera2: "INTERNAL-IP-2-MACHINE-GALERA"
 mysql_galera3: "INTERNAL-IP-3-MACHINE-GALERA"
-mysql_password: "XXXXXXXXXXXXXXXXXX"
+mysql_root_password: "XXXXXXXXXXXXXXXXXX"

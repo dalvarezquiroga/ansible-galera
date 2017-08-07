@@ -2,31 +2,38 @@
 # tasks file for logtrust.galera
 
 - name: Add apt key from Galera server
-- apt_key:
-	keyserver: keyserver.ubuntu.com
-	id: 44B7345738EBDE52594DAD80D669017EBC19DDBA
-	state: present
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 44B7345738EBDE52594DAD80D669017EBC19DDBA
+    state: present
 
 - name: Add apt key from Percona Server
-- apt_key: 
-	keyserver: keys.gnupg.net
-	id: 1C4CBDCDCD2EFD2A
-	state: present
+  apt_key:
+    keyserver: keys.gnupg.net
+    id: 1C4CBDCDCD2EFD2A
+    state: present
 
 - name: Add repo for Galera
-- apt_repository: 
-	repo: deb [arch=amd64,i386] http://releases.galeracluster.com/ubuntu/ trusty main
-	state: present
-	filename: galera-repo
-	update_cache: yes
+  apt_repository:
+    repo: "deb [arch=amd64,i386] http://releases.galeracluster.com/ubuntu/ xenial main"
+    state: present
+    filename: galera-repo
+    update_cache: yes
 
 - name: Add repo Percona
-- apt_repository:
-	repo: deb [arch=amd64,i386] http://repo.percona.com/apt trusty main
-	state: present
-	filename: percona-repo
-	update_cache: yes
+  apt_repository:
+    repo: "deb [arch=amd64,i386] http://repo.percona.com/apt xenial main"
+    state: present
+    filename: percona-repo
+    update_cache: yes
 
+- name: Specify MySQL root password before installing
+  debconf: name='mysql-wsrep-server-5.7' question='mysql-server/root_password' value='{{mysql_root_password | quote}}' vtype='password'
+  become: true
+
+- name: Confirm MySQL root password before installing
+  debconf: name='mysql-wsrep-server-5.7' question='mysql-server/root_password_again' value='{{mysql_root_password | quote}}' vtype='password'
+  become: true
 
 - name: Install packages Galera
   apt: name={{item}} state=installed
@@ -34,20 +41,9 @@
        - software-properties-common
        - galera-3
        - galera-arbitrator-3
-       - mysql-wsrep-5.6
+       - mysql-wsrep-5.7
        - rsync
        - debconf-utils
-       - percona-xtrabackup-24
-
-
-- name: ROOT Password for Galera Database
-- debconf:
-	name: mysql-wsrep-server-5.6
-	question: {{ item }}
-	value: {{mysql_password}}
-	with_items: 
-		- mysql-server/root_password
-		- mysql-server/root_password_again
 
 - name: Modify file for Galera
   template: src="galera.cnf.j2" dest="/etc/mysql/conf.d/galera.cnf"
@@ -63,4 +59,8 @@
 - name: Copy My.cnf file and change settings
   copy: src=my.cnf dest=/etc/mysql/my.cnf mode=0644 owner=root group=root
 
-#Here Read README
+#Now exec this line on the first server
+# /etc/init.d/mysql start --wsrep-new-cluster
+
+#Now in same machine copy  /etc/mysql/debian.cnf and put in others machines.
+# Later you can exec service mysql start in each nodes.

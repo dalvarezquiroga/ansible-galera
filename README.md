@@ -6,7 +6,7 @@ Playbook to deploy Galera Cluster
 
 ```bash
 
-apt-get install ansible 
+apt-get install ansible
 pip install ansible==VERSION
 
 ```
@@ -33,8 +33,11 @@ mysql_galera3: "INTERNAL-IP-3-MACHINE-GALERA"
 ```bash
 mysql_password: "XXXXXXXXXXXXXXXXXX"
 ```
+# Deploy:
 
-
+```bash
+ansible-playbook  -i ansible/environments/hosts -u USER --sudo ansible/roles/dalvarez.galera/ansible-galera.yml -e "host=HOST"
+```
 
 # Bring up the First Node
 
